@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/@webpixels/css/dist/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+</head>
+
+
+
+
+
+
+
+
+<body>
+
+
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-0 py-3 position-fixed w-full">
+        <div class="container-xl max-w-screen-xl">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="images/Coway-Logo.png" class="h-10" alt="...">
+            </a>
+            <!-- Navbar toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Collapse -->
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <!-- Action -->
+                <div class="d-flex align-items-lg-center mt-3 mt-lg-0 justify-content-end w-full">
+                    <a href="/logout" class="btn btn-sm btn-danger w-full w-lg-auto">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="bg-surface-secondary">
+
+        <br><br><br>
+        <% let total=agents.reduce((acc, agent, index)=> index + 1, 0); %>
+        <% let totalNoAccept=agents.reduce((count, agent)=> agent.confirmFlag === "N" ? count + 1 : count, 0); %>
+        <% let totalAccept=agents.reduce((count, agent)=> agent.confirmFlag === "Y" ? count + 1 : count, 0); %>
+
+        <!-- Main -->
+        <main class="py-6 bg-surface-secondary container">
+            <!-- Card stats -->
+            <div class="row g-2 g-md-6 mb-6">
+                <div class="col-xl-4 col-sm-6 col-12">
+                    <a href="#" onclick="loadStatus('All')">
+                        <div class="card p-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="h6 font-semibold text-muted text-sm d-block mb-2">ทั้งหมด</span>
+                                        <span class="h3 font-bold mb-0">
+                                            <%= total %>
+                                        </span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="icon icon-shape bg-blue-400 text-white text-lg rounded-circle">
+                                            <i class="bi bi-credit-card"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-4 col-sm-6 col-12">
+                    <a href="#" onclick="loadStatus('Y')">
+                        <div class="card p-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="h6 font-semibold text-muted text-sm d-block mb-2">ลงทะเบียนเข้าร่วมแล้ว</span>
+                                        <span class="h3 font-bold mb-0">
+                                            <%= totalAccept %>
+                                        </span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="icon icon-shape bg-green-500 text-white text-lg rounded-circle">
+                                            <i class="bi bi-credit-card"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-4 col-sm-6 col-12">
+                    <a href="#" onclick="loadStatus('N')">
+                        <div class="card p-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="h6 font-semibold text-muted text-sm d-block mb-2">ยังไม่ได้ลงทะเบียนเข้าร่วม</span>
+                                        <span class="h3 font-bold mb-0">
+                                            <%= totalNoAccept %>
+                                        </span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="icon icon-shape bg-red-500 text-white text-lg rounded-circle">
+                                            <i class="bi bi-credit-card"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+
+           
+
+
+            <div class="card mb-7">
+
+
+               
+
+                <div class="card-header">
+
+                    <div class="row my-8">
+                        <div class="col-xl-10 col-sm-6 col-12 mt-3">
+                            <input type="text" class="form-control form-input" name="inputSearchBox"
+                            placeholder="Search by first Name , lasr Name , email or phone ...">
+                        </div>
+                        <div class="col-xl-2 col-sm-6 col-12 mt-3">
+                            <button class="btn btn-primary w-full" id="searchAgent" name="searchAgent">Search</button>
+
+                        </div>
+
+                    </div>
+    
+
+                    <h5 class="mb-0">รายชื่อคนลงทะเบียน</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-nowrap">
+                        <thead class="thead-light text-center">
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">first Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Province</th>
+                                <th scope="col">Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% agents.forEach(function(agent, index) { %>
+                                <tr>
+                                    <td data-label="No" class="text-center">
+                                        <%= index + 1 %>
+                                    </td>
+                                    <td data-label="firstName">
+                                        <%= agent.firstName %>
+                                    </td>
+                                    <td data-label="lastName">
+                                        <%= agent.lastName %>
+                                    </td>
+                                    <td data-label="email">
+                                        <%= agent.email %>
+                                    </td>
+                                    <td data-label="phonenumber">
+                                        <%= agent.phonenumber %>
+                                    </td>
+                                    <td data-label="province" class="text-center">
+                                        <%= agent.province %>
+                                    </td>
+                                    <td data-label="status" class="text-center">
+                                        <% if (agent.confirmFlag=="N" ) { %>
+                                            <button class="btn btn-sm btn-danger">ยังไม่ได้ลงทะเบียน</button>
+                                            <% } %>
+                                                <% if (agent.confirmFlag=="Y" ) { %>
+                                                    <button class="btn btn-sm btn-success">ลงทะเบียนแล้ว</button>
+                                                    <% } %>
+                                    </td>
+    
+                                    <td data-label="" class="text-end">
+                                        <button class="btn btn-sm btn-light" data-bs-toggle="modal"
+                                            data-bs-target="#AgentID<%= index %>" data-firstname="<%= agent.firstName %>"
+                                            data-lastname="<%= agent.lastName %>" data-email="<%= agent.email %>"
+                                            data-phonenumber="<%= agent.phonenumber %>" data-address="<%= agent.address %>"
+                                            data-province="<%= agent.province %>"
+                                            data-confirmFlag="<%= agent.confirmFlag %>"
+                                            data-bookBankFile-path="<%= agent.bookBankFile && agent.bookBankFile.path ? agent.bookBankFile.path : 'ไม่มีข้อมูล' %>"
+                                            data-idCardFile-path="<%= agent.idCardFile && agent.idCardFile.path ? agent.idCardFile.path : 'ไม่มีข้อมูล' %>"
+                                            data-accpetPDPA="<%= agent.accpetPDPA %>"
+                                            data-dateRegister="<%= agent.dateRegister %>">
+                                            Details</button>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+
+
+
+
+
+    <% agents.forEach(function(agent, index) { %>
+        <div class="modal" id="AgentID<%= index %>" tabindex="-1" aria-labelledby="modal_example" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content shadow-3">
+                    <div class="modal-header">
+                        <h5 class="modal-title">เข้าร่วมงาน</h5>
+                        <div class="text-xs ms-auto">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <% if(agent.confirmFlag=="N" ) { %>
+                            <button class="btn btn-sm btn-neutral acceptBtn"
+                                data-agent-id="<%= agent._id %>">Accept</button>
+                            <% } else if(agent.confirmFlag=="Y" ) { %>
+                                <button class="btn btn-sm btn-neutral declineBtn"
+                                    data-agent-id="<%= agent._id %>">Decline</button>
+                                <% } %>
+                                    <button type="button" class="btn btn-sm btn-neutral"
+                                        data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% }); %>
+
+    </div>
+
+</body>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modals = document.querySelectorAll('.modal');
+
+        modals.forEach(function (modal) {
+            modal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const modalTitle = modal.querySelector('.modal-title');
+                const modalBody = modal.querySelector('.modal-body');
+
+                const firstname = button.getAttribute('data-firstname');
+                const lastname = button.getAttribute('data-lastname');
+                const email = button.getAttribute('data-email');
+                const phonenumber = button.getAttribute('data-phonenumber');
+                const address = button.getAttribute('data-address');
+                const province = button.getAttribute('data-province');
+                const confirmFlag = button.getAttribute('data-confirmFlag');
+                const idCardFilePath = button.getAttribute('data-idCardFile-path');
+                const bookBankFilePath = button.getAttribute('data-bookBankFile-path');
+                const accpetPDPA = button.getAttribute('data-accpetPDPA');
+                const dateRegister = button.getAttribute('data-dateRegister');
+
+                modalTitle.textContent = `ยืนยันการเข้าร่วมงาน`;
+                modalBody.innerHTML = `
+                <div class='text-end'>
+                ${confirmFlag === 'N' ? '<button class="btn btn-sm btn-danger">ยังไม่ได้ลงทะเบียน</button>' : '<button class="btn btn-sm btn-success">ลงทะเบียนแล้ว</button>'}
+                </div>
+                <p><strong>ชื่อ :</strong> ${firstname}</p>
+                <p><strong>นามสกุล :</strong> ${lastname}</p>
+                <p><strong>Email :</strong> ${email}</p>
+                <p><strong>หมายเลขโทรศัพท์ :</strong> ${phonenumber}</p>
+                <p><strong>ที่อยู่ :</strong> ${address}</p>
+                <p><strong>จังหวัด :</strong> ${province}</p>
+                <p><strong>Accpet PDPA :</strong> 
+                    ${accpetPDPA === 'N' ? '<button class="btn btn-sm btn-danger">ไม่ได้กดยอมรับ</button>' : '<button class="btn btn-sm btn-success">ยอมรับแล้ว</button>'}
+                </p>
+                <hr>
+                <p><strong>ID Card File :</strong> 
+                    <a href="${idCardFilePath}">
+                    ${idCardFilePath.split('/').pop()}
+                    </a></p>
+                <p><strong>Book Bank File :</strong> 
+                    <a href="${bookBankFilePath}">
+                    ${bookBankFilePath.split('/').pop()}
+                    </a></p>
+                <hr>
+                <p><strong>วันที่ลงทะเบียน :</strong> ${new Date(dateRegister).toLocaleDateString()}</p>
+            `;
+            });
+        });
+    });
+
+
+
+
+    $(document).ready(function () {
+
+        function updateConfirmation(agentId, newConfirmFlag) {
+            $.ajax({
+                type: "POST",
+                url: "/updateAgentConfirmation",
+                data: { agentId: agentId, confirmFlag: newConfirmFlag },
+                success: function (response) {
+                    console.log("Request successful:", response);
+                    alert(response.message);
+                    location.reload();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Request failed:", textStatus, errorThrown);
+                    alert("Error updating confirmation.");
+                }
+            });
+        }
+
+        $(".declineBtn").click(function () {
+            const agentId = $(this).data("agent-id");
+            updateConfirmation(agentId, "N");
+        });
+    });
+
+
+
+
+    $(document).ready(function () {
+        $(".acceptBtn").click(function () {
+            console.log("Accept button clicked!");
+            const agentId = $(this).data("agent-id");
+
+            // อ่านค่า confirmFlag ปัจจุบันจากปุ่ม
+            let currentConfirmFlag = $(this).attr("data-confirmFlag");
+            console.log("Current confirmFlag:", currentConfirmFlag);
+
+            // ตรวจสอบและสลับค่า
+            let newConfirmFlag = currentConfirmFlag === "Y" ? "N" : "Y";
+            console.log("New confirmFlag:", newConfirmFlag);
+
+            $.ajax({
+                type: "POST",
+                url: "/updateAgentConfirmation",
+                data: { agentId: agentId, confirmFlag: newConfirmFlag },
+                success: function (response) {
+                    console.log("Request successful:", response);
+                    alert(response.message);
+
+                    // รีเฟรชหน้าเว็บ
+                    location.reload();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Request failed:", textStatus, errorThrown);
+                    alert("Error updating confirmation.");
+                }
+            });
+        });
+    });
+
+
+
+
+</script>
+
+
+
+<script>
+
+
+    $(document).ready(function () {
+
+
+
+        $('button[name="searchAgent"]').on('click', function (e) {
+            e.preventDefault();
+            const searchQuery = $('input[name="inputSearchBox"]').val();
+            //console.log("Input value:", searchQuery); // ลอง log ดูว่าได้ค่าถูกต้องหรือไม่
+
+            $.ajax({
+                url: '/search',
+                method: 'GET',
+                data: { query: searchQuery },
+                success: function (agents) {
+                    let tbody = "";
+
+                    agents.forEach(function (agent, index) {
+                        tbody += `
+        <tr>
+            <td data-label="No" class="text-center">${index + 1}</td>
+            <td data-label="firstName">${agent.firstName}</td>
+            <td data-label="lastName">${agent.lastName}</td>
+            <td data-label="email">${agent.email}</td>
+            <td data-label="phonenumber">${agent.phonenumber}</td>
+            <td data-label="province" class="text-center">${agent.province}</td>
+            <td data-label="status" class="text-center">
+                ${agent.confirmFlag == "N" ? '<button class="btn btn-sm btn-danger">ยังไม่ได้ลงทะเบียน</button>' : ''}
+                ${agent.confirmFlag == "Y" ? '<button class="btn btn-sm btn-success">ลงทะเบียนแล้ว</button>' : ''}
+            </td>
+            <td data-label="" class="text-end">
+                <a class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#AgentID${index}"
+                   data-firstname="${agent.firstName}" 
+                   data-lastname="${agent.lastName}"
+                   data-email="${agent.email}"
+                   data-phonenumber="${agent.phonenumber}"
+                   data-address="${agent.address}"
+                   data-province="${agent.province}"
+                   data-confirmFlag="${agent.confirmFlag}"
+                   data-bookBankFile-path="${agent.bookBankFile && agent.bookBankFile.path ? agent.bookBankFile.path : 'ไม่มีข้อมูล'}"
+                   data-idCardFile-path="${agent.idCardFile && agent.idCardFile.path ? agent.idCardFile.path : 'ไม่มีข้อมูล'}"
+                   data-accpetPDPA="${agent.accpetPDPA}"
+                   data-dateRegister="${agent.dateRegister}">
+                   Details
+                </a>
+            </td>
+        </tr>
+    `;
+                    });
+
+
+                    $('table tbody').html(tbody);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error("Error:", textStatus, errorThrown);
+                    alert('เกิดข้อผิดพลาดในการประมวลผลคำขอของคุณ');
+                }
+            });
+        });
+    });
+
+
+</script>
+
+
+<script>
+    function loadStatus(status) {
+        let searchQuery;
+
+        if (status === 'All') {
+            searchQuery = "Y,N";
+        } else {
+            searchQuery = status;
+        }
+
+        $.ajax({
+            url: '/search',
+            method: 'GET',
+            data: { query: searchQuery },
+            success: function (agents) {
+                let tbody = "";
+
+                // เพิ่มการเช็คที่นี่
+                if (agents.length === 0) {
+                    tbody = '<tr><td colspan="8" class="text-center">ไม่พบข้อมูลที่ค้นหา</td></tr>';
+                } else {
+                    agents.forEach(function (agent, index) {
+                        tbody += `
+                    <tr>
+                        <td data-label="No" class="text-center">${index + 1}</td>
+                        <td data-label="firstName">${agent.firstName}</td>
+                        <td data-label="lastName">${agent.lastName}</td>
+                        <td data-label="email">${agent.email}</td>
+                        <td data-label="phonenumber">${agent.phonenumber}</td>
+                        <td data-label="province" class="text-center">${agent.province}</td>
+                        <td data-label="status" class="text-center">
+                            ${agent.confirmFlag === "N" ? '<button class="btn btn-sm btn-danger">ยังไม่ได้ลงทะเบียน</button>' : ''}
+                            ${agent.confirmFlag === "Y" ? '<button class="btn btn-sm btn-success">ลงทะเบียนแล้ว</button>' : ''}
+                        </td>
+                        <td data-label="" class="text-end">
+                            <a class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#AgentID${index}"
+                               data-firstname="${agent.firstName}" 
+                               data-lastname="${agent.lastName}"
+                               data-email="${agent.email}"
+                               data-phonenumber="${agent.phonenumber}"
+                               data-address="${agent.address}"
+                               data-province="${agent.province}"
+                               data-confirmFlag="${agent.confirmFlag}"
+                               data-bookBankFile-path="${agent.bookBankFile && agent.bookBankFile.path ? agent.bookBankFile.path : 'ไม่มีข้อมูล'}"
+                               data-idCardFile-path="${agent.idCardFile && agent.idCardFile.path ? agent.idCardFile.path : 'ไม่มีข้อมูล'}"
+                               data-accpetPDPA="${agent.accpetPDPA}"
+                               data-dateRegister="${agent.dateRegister}">
+                               Details
+                            </a>
+                        </td>
+                    </tr>
+                    `;
+                    });
+                }
+
+                $('table tbody').html(tbody);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("Error:", textStatus, errorThrown);
+                alert('เกิดข้อผิดพลาดในการประมวลผลคำขอของคุณ');
+            }
+        });
+    }
+</script>
+
+
+
+
+</html>
